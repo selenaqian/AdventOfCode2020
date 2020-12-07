@@ -47,8 +47,12 @@ public class Day7 extends Day {
         }
         int sum = 0;
         for (int i = 0; i < containsNumber.get(color).size(); i++) {
-            System.out.println(containsNumber.get(color).get(i) + " " + contains.get(color).get(i));
-            sum += containsNumber.get(color).get(i) * findNumberInside(contains.get(color).get(i));
+            int num = containsNumber.get(color).get(i);
+            String col = contains.get(color).get(i);
+            System.out.println(num + " " + col);
+            int next = containsNumber.get(col).size();
+            sum += num * findNumberInside(col);
+            if (next != 0) sum+=num;
         }
         System.out.println(sum);
         return sum;
