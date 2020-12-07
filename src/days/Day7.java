@@ -5,10 +5,14 @@ import java.util.*;
 
 public class Day7 extends Day {
     Map<String, Set<String>> canBeIn;
+    Map<String, List<String>> contains;
+    Map<String, List<Integer>> containsNumber;
 
     public Day7(String filename) throws FileNotFoundException {
         super(filename);
         canBeIn = new HashMap<>();
+        contains = new HashMap<>();
+        containsNumber = new HashMap<>();
         for (String s : data) {
             processRule(s);
         }
@@ -33,24 +37,42 @@ public class Day7 extends Day {
             canContainTemp.removeAll(canContain);
             canContain.addAll(temp);
         }
-        //look for things that directly contain color
-        //then look for things that contain those colors
-        //and so on
         return canContain.size();
     }
 
+    public int findNumberInside(String color) {
+        if(containsNumber.get(color).size() == 0) {
+            System.out.println(color + " final");
+            return 1;
+        }
+        int sum = 0;
+        for (int i = 0; i < containsNumber.get(color).size(); i++) {
+            System.out.println(containsNumber.get(color).get(i) + " " + contains.get(color).get(i));
+            sum += containsNumber.get(color).get(i) * findNumberInside(contains.get(color).get(i));
+        }
+        System.out.println(sum);
+        return sum;
+    }
+
     private void processRule(String line) {
-        //put info from rule into canBeIn
-        //things after contains should have canBeIn
         String[] separated = line.split(" contain ");
         separated[0] = separated[0].replaceAll(" bags", "");
+        contains.putIfAbsent(separated[0], new ArrayList<>());
+        containsNumber.putIfAbsent(separated[0], new ArrayList<>());
+
         String[] contained = separated[1].split(",");
         for (String s : contained) {
+            String findNum = s.replaceAll("[^0-9]", "");
+            if (findNum.length() > 0) {
+                containsNumber.get(separated[0]).add(Integer.parseInt(findNum));
+            }
+
             s = s.replaceAll("[0-9]", "");
             s = s.replaceAll("bags|bag|\\.", "");
             s = s.trim();
             canBeIn.putIfAbsent(s, new HashSet<>());
             canBeIn.get(s).add(separated[0]);
+            contains.get(separated[0]).add(s);
         }
     }
 }
