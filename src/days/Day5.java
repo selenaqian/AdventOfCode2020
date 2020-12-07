@@ -1,19 +1,15 @@
-package day5;
-
-import read.SimpleFileReader;
+package days;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Day5 {
-    List<String> data;
+public class Day5 extends Day{
     List<Integer> ids;
 
     public Day5(String filename) throws FileNotFoundException {
-        SimpleFileReader fr = new SimpleFileReader(filename);
-        data = fr.getData();
+        super(filename);
         ids = new ArrayList<>();
     }
 

@@ -1,19 +1,16 @@
-package day1;
-
-import read.SimpleFileReader;
+package days;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Day1 {
+public class Day1 extends Day {
     List<Integer> values;
-    SimpleFileReader fr;
 
     public Day1(String filename) throws FileNotFoundException {
+        super(filename);
         values = new ArrayList<>();
-        fr = new SimpleFileReader(filename);
-        for (String s : fr.getData()) {
+        for (String s : data) {
             values.add(Integer.parseInt(s));
         }
         for (int i : values) {

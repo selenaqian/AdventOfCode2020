@@ -1,6 +1,4 @@
-package day4;
-
-import read.SimpleFileReader;
+package days;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -8,13 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Day4 {
-    List<String> data;
+public class Day4 extends Day{
     int total = 0;
 
     public Day4(String filename) throws FileNotFoundException {
-        SimpleFileReader fr = new SimpleFileReader(filename);
-        data = fr.getData();
+        super(filename);
     }
 
     public int countValid() {

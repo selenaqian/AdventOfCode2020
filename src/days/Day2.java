@@ -1,17 +1,14 @@
-package day2;
-
-import read.SimpleFileReader;
+package days;
 
 import java.io.FileNotFoundException;
 
-public class Day2 {
+public class Day2 extends Day {
     int correct;
-    SimpleFileReader fr;
 
     public Day2(String filename) throws FileNotFoundException {
+        super(filename);
         correct = 0;
-        fr = new SimpleFileReader(filename);
-        for (String s : fr.getData()) {
+        for (String s : data) {
             count(s);
         }
         System.out.println(correct);

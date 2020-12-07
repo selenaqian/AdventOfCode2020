@@ -1,16 +1,12 @@
-package day6;
-
-import read.SimpleFileReader;
+package days;
 
 import java.io.FileNotFoundException;
 import java.util.*;
 
-public class Day6 {
-    List<String> data;
+public class Day6 extends Day{
 
     public Day6(String filename) throws FileNotFoundException {
-        SimpleFileReader fr = new SimpleFileReader(filename);
-        data = fr.getData();
+        super(filename);
     }
 
     public int totalYes() {

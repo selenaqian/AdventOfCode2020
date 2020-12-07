@@ -1,16 +1,11 @@
-package day3;
-
-import read.SimpleFileReader;
+package days;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
-public class Day3 {
-    List<String> data;
+public class Day3 extends Day {
 
     public Day3(String filename) throws FileNotFoundException {
-        SimpleFileReader fr = new SimpleFileReader(filename);
-        data = fr.getData();
+        super(filename);
     }
 
     public int countTrees(int xSlope, int ySlope) {

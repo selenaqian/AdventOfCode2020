@@ -1,5 +1,4 @@
-
-import day6.Day6;
+import days.Day6;
 
 import java.io.FileNotFoundException;
 
