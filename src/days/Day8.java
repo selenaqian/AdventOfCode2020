@@ -19,10 +19,30 @@ public class Day8 extends Day {
         }
     }
 
+    public void testNoLoop() {
+        for (int i = data.size() - 1; i > -1; i--) {
+            if (operations[i].equals("nop")) {
+                operations[i] = "jmp";
+                System.out.printf("%d, %s: %d\n", i, operations[i], findAccumulatorValue());
+                operations[i] = "nop";
+            }
+            else if (operations[i].equals("jmp")) {
+                operations[i] = "nop";
+                System.out.printf("%d, %s: %d\n", i, operations[i], findAccumulatorValue());
+                operations[i] = "jmp";
+            }
+        }
+    }
+
     public int findAccumulatorValue() {
         int acc = 0;
         int insIndex = 0;
+        visited = new HashSet<>();
         while (!visited.contains(insIndex)) {
+            if (insIndex == data.size()) {
+                System.out.println("finished");
+                break;
+            }
             visited.add(insIndex);
             String ins = operations[insIndex];
             int val = values[insIndex];
