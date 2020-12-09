@@ -8,6 +8,8 @@ public class Main {
         try {
             Day9 temp = new Day9("data/day9/input.txt");
             System.out.println(temp.findNumber());
+            System.out.println("sum up");
+            temp.findRangeSum(temp.findNumber());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
