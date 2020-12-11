@@ -2,7 +2,7 @@ package days;
 
 import java.io.FileNotFoundException;
 
-public class Day11 extends Day {
+public abstract class Day11 extends Day {
     char[][] seats;
 
     public Day11(String filename) throws FileNotFoundException {
@@ -16,7 +16,11 @@ public class Day11 extends Day {
         }
     }
 
-    public int occupiedSeats() {
+    protected boolean inBounds(int i, int j) {
+        return i > -1 && j > -1 && i < seats.length && j < seats[0].length;
+    }
+
+    public int occupiedSeats(){
         int count = 0;
         boolean changed = true;
         while(changed) {
@@ -30,7 +34,7 @@ public class Day11 extends Day {
         return count;
     }
 
-    private boolean updateState() {
+    protected boolean updateState() {
         boolean changed = false;
         char[][] newSeats = new char[data.size()][data.get(0).length()];
         for (int i = 0; i < seats.length; i++) {
@@ -42,26 +46,6 @@ public class Day11 extends Day {
         if (changed) seats = newSeats;
         return changed;
     }
-
-    private int calculateNeighbors(int i, int j) {
-        int count = 0;
-        int[] directions = new int[]{-1, 0, 1};
-        for (int x : directions) {
-            for (int y : directions) {
-                if ((x!=0 || y!=0) && inBounds(i+x, j+y) && seats[i+x][j+y]=='#') count++;
-            }
-        }
-        return count;
-    }
-
-    private char updateSeat(int i, int j, int neighbors) {
-        char current = seats[i][j];
-        if (current == 'L' && neighbors==0) current='#';
-        else if (current=='#' && neighbors >= 4) current = 'L';
-        return current;
-    }
-
-    private boolean inBounds(int i, int j) {
-        return i > -1 && j > -1 && i < seats.length && j < seats[0].length;
-    }
+    abstract int calculateNeighbors(int i, int j);
+    abstract char updateSeat(int i, int j, int neighbors);
 }
