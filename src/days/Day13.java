@@ -47,10 +47,15 @@ public class Day13 extends Day{
         System.out.println(offsets);
 
         long time = buses.get(0);
+        long increaseBy = buses.get(0);
         boolean changed = true;
         while (changed) {
             for (int i=1; i < buses.size(); i++) {
-                if (Long.compare(time%buses.get(i), buses.get(i)-offsets.get(i))==0) {
+                long calculated = (buses.get(i)-offsets.get(i))%buses.get(i);
+                if (calculated < 0) calculated+=buses.get(i);
+                System.out.println(buses.get(i) + " " + calculated);
+                if (Long.compare(time%buses.get(i), calculated)==0) {
+                    if (!(increaseBy%buses.get(i)==0)) increaseBy*=buses.get(i);
                     changed = false;
                 }
                 else {
@@ -58,7 +63,8 @@ public class Day13 extends Day{
                     break;
                 }
             }
-            if (changed) time+=buses.get(0);
+            System.out.println(time);
+            if (changed) time+=increaseBy;
         }
         return time;
     }
