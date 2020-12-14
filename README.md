@@ -8,3 +8,9 @@ and the Main class gets written over to run the code.
 Start: 12/02/2020 (yes, I started a day late)
 
 End:
+
+### Resources
+
+Day 13
+
+* [Chinese Remainder Theorem](https://crypto.stanford.edu/pbc/notes/numbertheory/crt.html)
