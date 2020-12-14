@@ -11,20 +11,24 @@ public class Day14 extends Day {
         super(filename);
         oneMask = 0L;
         zeroMask = 0L;
-        values = new long[largestAddress()];
+        values = new long[largestAddress()+1];
     }
 
     public long writeMemory() {
         for (String s : data) {
             if (s.contains("mask")) {
                 makeMask(s.split("= ")[1]);
-                System.out.println(oneMask);
-                System.out.println(zeroMask);
+            }
+            else {
+                String[] split = s.split("] = ");
+                long val = Long.parseLong(split[1]);
+                int index = Integer.parseInt(split[0].replace("mem[", ""));
+                values[index] = (val & zeroMask) | oneMask;
             }
         }
-        long sum = 0;
-        for (long l : values) {
-            sum+=l;
+        long sum = 0L;
+        for (int i=0; i < values.length; i++) {
+            sum+=values[i];
         }
         return sum;
     }
@@ -44,18 +48,15 @@ public class Day14 extends Day {
     }
 
     private void makeMask(String s) {
+        oneMask = 0L;
+        zeroMask = 0L;
         for (int power = 35; power > -1; power--) {
             if (s.charAt(35-power) == '1') {
                 oneMask+=(1L<<power);
                 zeroMask+=(1L<<power);
             }
-            else if (s.charAt(35-power) == '0') {
-                zeroMask+=(0L<<power);
-                oneMask+=(0L<<power);
-            }
-            else {
+            else if (s.charAt(35-power) == 'X') {
                 zeroMask+=(1L<<power);
-                oneMask+=(0L<<power);
             }
         }
     }
