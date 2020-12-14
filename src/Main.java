@@ -1,4 +1,4 @@
-import days.Day13;
+import days.Day14;
 
 import java.io.FileNotFoundException;
 
@@ -6,8 +6,8 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Day13 temp = new Day13("data/day13/input.txt");
-            System.out.println(temp.findDeparture());
+            Day14 temp = new Day14("data/day14/input.txt");
+            temp.writeMemory();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
