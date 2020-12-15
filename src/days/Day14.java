@@ -73,7 +73,7 @@ public class Day14 extends Day {
 
     private List<Long> findAddresses(String address, List<Long> allAddresses) {
         if (allAddresses == null) allAddresses = new ArrayList<>();
-        if (!address.contains("X")) allAddresses.add(Long.parseLong(address));
+        if (!address.contains("X")) allAddresses.add(Long.parseLong(address, 2));
         else {
             int index = address.indexOf('X');
             String one = address.substring(0, index) + '1' + address.substring(index+1);
