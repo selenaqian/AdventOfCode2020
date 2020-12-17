@@ -9,8 +9,12 @@ Start: 12/02/2020 (yes, I started a day late)
 
 End:
 
-### Resources
+### Resources/Notes
 
 Day 13
 
 * [Chinese Remainder Theorem](https://crypto.stanford.edu/pbc/notes/numbertheory/crt.html)
+
+Day 17
+
+* may revisit this one to allow for infinite dimensions
