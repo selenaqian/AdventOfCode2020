@@ -8,15 +8,21 @@ import java.util.Set;
 
 public class Day17 extends Day {
     Map<Integer, Character> cubes;
+    int dimensions;
 
-    public Day17(String filename) throws FileNotFoundException {
+    public Day17(String filename, int d) throws FileNotFoundException {
         super(filename);
         cubes = new HashMap<>();
+        dimensions = d;
+
         for (int x = 0; x < data.size(); x++) {
             String s = data.get(x);
             for (int y = 0; y < s.length(); y++) {
                 char c = s.charAt(y);
-                cubes.putIfAbsent(makeId(new int[]{0, y, x}), c);
+                if (dimensions == 4) {
+                    cubes.putIfAbsent(makeId(new int[]{0, 0, y, x}), c);
+                }
+                else cubes.putIfAbsent(makeId(new int[]{0, y, x}), c);
             }
         }
     }
@@ -42,8 +48,16 @@ public class Day17 extends Day {
         for (int i : directions) {
             for (int j : directions) {
                 for (int k : directions) {
-                    int neighborId = id + i*10000 + j*100 + k;
-                    if ((i!=0 || j!=0 || k!=0) && cubes.get(neighborId)!=null && cubes.get(neighborId)=='#') count++;
+                    if (dimensions == 4) {
+                        for (int w : directions) {
+                            int neighborId = id + i*1000000 + j*10000 + k*100 + w;
+                            if ((i!=0 || j!=0 || k!=0 || w!=0) && cubes.get(neighborId)!=null && cubes.get(neighborId)=='#') count++;
+                        }
+                    }
+                    else {
+                        int neighborId = id + i*10000 + j*100 + k;
+                        if ((i!=0 || j!=0 || k!=0) && cubes.get(neighborId)!=null && cubes.get(neighborId)=='#') count++;
+                    }
                 }
             }
         }
@@ -73,7 +87,12 @@ public class Day17 extends Day {
         for (int i : directions) {
             for (int j : directions) {
                 for (int k : directions) {
-                    allCubes.add(id + i*10000 + j*100 + k);
+                    if (dimensions == 4) {
+                        for (int w : directions) {
+                            allCubes.add(id + i*1000000 + j*10000 + k*100 + w);
+                        }
+                    }
+                    else allCubes.add(id + i*10000 + j*100 + k);
                 }
             }
         }
