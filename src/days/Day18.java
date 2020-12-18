@@ -13,7 +13,7 @@ public class Day18 extends Day {
 
     public long getTotal() {
         for (int i = 0; i < data.size(); i++) {
-            values[i] = processLine(data.get(i));
+            values[i] = Long.parseLong(processLine(data.get(i)));
         }
         long total = 0L;
         for (long n : values) {
@@ -22,73 +22,29 @@ public class Day18 extends Day {
         return total;
     }
 
-    private long processLine(String line) {
-        String rpn = shuntingYard(line);
-        Stack<Long> values = new Stack<>();
-        for (String s : rpn.split(" ")) {
-            if (s.matches("[-0-9]+")) {
-                values.push(Long.parseLong(s));
-                //System.out.println("number: " + s);
-            }
-            else if (s.equals("+")) {
-                long a = values.pop();
-                long b = values.pop();
-                //System.out.println("adding: " + (a+b));
-                values.add(a+b);
-            }
-            else if (s.equals("*")) {
-                long a = values.pop();
-                long b = values.pop();
-                //System.out.println("mult: " + (a*b));
-                values.add(a*b);
-            }
+    private String processLine(String line) {
+        while (line.contains(")")) {
+            int close = line.indexOf(")");
+            int open = line.lastIndexOf("(", close);
+            line = line.substring(0, open) + calculate(line.substring(open+1, close)) + line.substring(close+1);
         }
-
-        long t = values.pop();
-        System.out.println(t);
-        return t;
+        System.out.println(calculate(line));
+        return calculate(line);
     }
 
-    private String shuntingYard(String original) {
-        StringBuilder postFix = new StringBuilder();
-        String[] parts = original.split(" ");
-        Stack<String> operators = new Stack<>();
-        for (int j = parts.length-1; j > -1; j--) {
-            String s = parts[j];
-            if (s.contains("+") || s.contains("*")) operators.push(s);
-            else if (s.contains(")")) {
-                while (s.contains(")")) {
-                    operators.push(")");
-                    int i = s.indexOf(")");
-                    s = s.substring(0, i) + s.substring(i+1);
-                }
-                postFix.append(s + " ");
+    private String calculate(String expression) {
+        //expression should not have parentheses in it
+        String[] parts = expression.split(" ");
+        long total = Long.parseLong(parts[0]);
+        char op = ' ';
+        for (int i = 1; i < parts.length; i++) {
+            if (parts[i].equals("+")) op = '+';
+            else if (parts[i].equals("*")) op = '*';
+            else {
+                if (op == '+') total+=Long.parseLong(parts[i]);
+                else if (op == '*') total*=Long.parseLong(parts[i]);
             }
-            else if (s.contains("(")) {
-                //System.out.println(operators);
-                postFix.append(s.replace("(", "") + " ");
-                String op = operators.pop();
-                while (s.contains("(")) {
-                    while (!op.equals(")")) {
-                        postFix.append(op + " ");
-                        if (operators.isEmpty()) {
-                            op = ")";
-                        }
-                        else op = operators.pop();
-                    }
-                    int i = s.indexOf("(");
-                    s = s.substring(0, i) + s.substring(i+1);
-                    if (!operators.isEmpty() && s.contains(")")) op = operators.pop();
-                    //System.out.println(s + " end paren");
-                }
-            }
-            else postFix.append(s + " ");
         }
-        while (!operators.isEmpty()) {
-            postFix.append(operators.pop() + " ");
-        }
-
-        System.out.println(postFix.toString().trim());
-        return postFix.toString().trim();
+        return total + "";
     }
 }
