@@ -26,10 +26,20 @@ public class Day18 extends Day {
         while (line.contains(")")) {
             int close = line.indexOf(")");
             int open = line.lastIndexOf("(", close);
-            line = line.substring(0, open) + calculate(line.substring(open+1, close)) + line.substring(close+1);
+            line = line.substring(0, open) + calculateAdditionFirst(line.substring(open+1, close)) + line.substring(close+1);
         }
-        System.out.println(calculate(line));
-        return calculate(line);
+        System.out.println(calculateAdditionFirst(line));
+        return calculateAdditionFirst(line);
+    }
+
+    private String calculateAdditionFirst(String expression) {
+        //expression no parentheses, need split on the multiplications
+        String[] addOnly = expression.split(" \\* ");
+        long total = 1;
+        for (String s : addOnly) {
+            total*=Long.parseLong(calculate(s));
+        }
+        return total + "";
     }
 
     private String calculate(String expression) {
