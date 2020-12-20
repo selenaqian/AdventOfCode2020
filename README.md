@@ -18,3 +18,7 @@ Day 13
 Day 17
 
 * may revisit this one to allow for infinite dimensions
+
+Day 19
+
+* this one was hard - getting the recursion right and debugging - and honestly, I made it harder by not looking at the input for shortcuts, though it might be better for adaptation to different inputs?
