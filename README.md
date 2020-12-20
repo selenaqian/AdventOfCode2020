@@ -22,3 +22,8 @@ Day 17
 Day 19
 
 * this one was hard - getting the recursion right and debugging - and honestly, I made it harder by not looking at the input for shortcuts, though it might be better for adaptation to different inputs?
+
+Day 20
+
+* haven't done part 2 yet - will need a method to actually put the image together in a certain orientation, then a method
+to flip/rotate the image and find the sea monsters, replace them, and count the rough water

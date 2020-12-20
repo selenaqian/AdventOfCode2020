@@ -9,11 +9,13 @@ import java.util.Map;
 public class Day20 extends Day {
     Map<String, List<String>> tileNums;
     Map<String, List<String>> allEdges;
+    List<String> corners;
 
     public Day20(String filename) throws FileNotFoundException {
         super(filename);
         tileNums = new HashMap<>();
         allEdges = new HashMap<>();
+        corners = new ArrayList<>();
 
         List<String> currentTile = new ArrayList<>();
         String tileNumber = "";
@@ -50,8 +52,13 @@ public class Day20 extends Day {
                 allEdges.get(edge).add(tile);
             }
         }
+
+        for (String e : allEdges.keySet()) {
+            System.out.println(e + ": " + allEdges.get(e));
+        }
     }
 
+    //answers found: tiles 3931, 2113, 2251, 2411
     public void findCorners() {
         Map<String, Integer> edgeSeen = new HashMap<>();
         for (String tile : tileNums.keySet()) {
@@ -70,7 +77,10 @@ public class Day20 extends Day {
                     edgeSeen.put(edge, edgeSeen.get(edge)+1);
                 }
             }
-            if (matches==2) System.out.println(tile + " " + matches);
+            if (matches==2) {
+                System.out.println(tile + " " + matches);
+                corners.add(tile);
+            }
         }
     }
 }
