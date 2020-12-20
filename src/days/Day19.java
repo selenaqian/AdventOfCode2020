@@ -48,30 +48,37 @@ public class Day19 extends Day {
                 current+=rules.get(curr).substring(1,2);
             }
             else {
-                String newRule1 = rules.get(curr).substring(0, rules.get(curr).indexOf(" | "));
-                String newRule2 = rules.get(curr).substring(rules.get(curr).indexOf(" | ")+3);
+                String newRule1 = rules.get(curr);
+                String newRule2 = null;
+                if (rules.get(curr).contains("|")) {
+                    newRule1 = rules.get(curr).substring(0, rules.get(curr).indexOf(" | "));
+                    newRule2 = rules.get(curr).substring(rules.get(curr).indexOf(" | ")+3);
+                }
                 for (String a : rulesList) {
                     newRule1+=" " + a;
-                    newRule2+=" " + a;
+                    if (newRule2!= null) newRule2+=" " + a;
                 }
                 boolean one = true;
-                boolean two = true;
                 for (String a : newRule1.split(" ")) {
                     if (!rules.get(a).contains("\"")) {
                         one = false;
                         break;
                     }
                 }
-                for (String a : newRule2.split(" ")) {
-                    if (!rules.get(a).contains("\"")) {
-                        two = false;
-                        break;
-                    }
-                }
                 if (one) possibilities.add(makeRule(newRule1, current));
                 else makeRule(newRule1, current);
-                if (two) possibilities.add(makeRule(newRule2, current));
-                else makeRule(newRule2, current);
+
+                if (newRule2!= null) {
+                    boolean two = true;
+                    for (String a : newRule2.split(" ")) {
+                        if (!rules.get(a).contains("\"")) {
+                            two = false;
+                            break;
+                        }
+                    }
+                    if (two) possibilities.add(makeRule(newRule2, current));
+                    else makeRule(newRule2, current);
+                }
                 return current;
             }
         }
