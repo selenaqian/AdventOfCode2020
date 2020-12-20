@@ -26,21 +26,10 @@ public class Day19 extends Day {
 
     public int checkValidMessages() {
         makeRule(rules.get("0"), "");
-        for (String rule : possibilities) {
-            System.out.println(rule);
-        }
         int count = 0;
-        int i = 0;
         for (String m : messages) {
             for (String rule : possibilities) {
-                for (char c : rule.toCharArray()) {
-                    if (m.indexOf(c, i) > -1) {
-                        i = m.indexOf(c, i);
-                    }
-                    else break;
-                }
-                count++;
-                break;
+                if (m.equals(rule)) count++;
             }
         }
         return count;
