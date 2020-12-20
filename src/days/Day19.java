@@ -55,96 +55,42 @@ public class Day19 extends Day {
         possibilities = new ArrayList<>();
 
         makeRule2("0", "");
-
-        for (String s : possibilities) {
-            System.out.println(s);
-        }
-
         int count = 0;
+        // can tell from input that 0 is just 8 and 11 so that simplifies this a lot - don't even need the makeRule2 method but I'm going to leave it
         for (String m : messages) {
-            for (String rule : possibilities) {
-                if (rule.contains("8")) {
-                    String[] parts = rule.split("8");
-                    List<String> mParts = new ArrayList<>();
-                    int i = 0;
-                    boolean matches = true;
-                    for (String section : parts) {
-                        if (i == 0 && m.indexOf(section) == 0) {
-                            i = section.length();
-                        }
-                        else if (m.indexOf(section, i) > -1) {
-                            mParts.add(m.substring(i, m.indexOf(section)));
-                            i = m.indexOf(section) + section.length();
-                        }
-                        else {
-                            matches = false;
+            boolean has42;
+            int count42 = 0;
+            boolean has11;
+            int count11 = 0;
+            while (true) {
+                has11 = false;
+                for (String option42 : rule42) {
+                    for (String option31 : rule31) {
+                        if (m.indexOf(option42) > -1 && m.lastIndexOf(option31) == m.length() - option31.length()) {
+                            has11 = true;
+                            count11++;
+                            m = m.substring(option42.length(), m.length() - option31.length());
                             break;
                         }
                     }
-                    if (matches) {
-                        //check if in between parts are multiples of rule 42
-                        for (String mSection : mParts) {
-                            matches = false;
-                            while (mSection.length() > 0) {
-                                for (String option : rule42) {
-                                    if (mSection.indexOf(option) == 0) {
-                                        mSection = option.substring(option.length());
-                                        matches = true;
-                                        break;
-                                    }
-                                    else {
-                                        matches = false;
-                                    }
-                                }
-                                if (!matches) break;
-                            }
-                        }
-                        if (matches) count++;
+                    if (has11) break;
+                }
+                if (!has11) break;
+            }
+            while (count11 > 0) {
+                has42 = false;
+                for (String option : rule42) {
+                    if (m.indexOf(option) == 0) {
+                        has42 = true;
+                        count42++;
+                        m = m.substring(option.length());
+                        break;
                     }
                 }
-                else if (rule.contains("11")) {
-                    String[] parts = rule.split("11");
-                    List<String> mParts = new ArrayList<>();
-                    int i = 0;
-                    boolean matches = true;
-                    for (String section : parts) {
-                        if (i == 0 && m.indexOf(section) == 0) {
-                            i = section.length();
-                        }
-                        else if (m.indexOf(section, i) > -1) {
-                            mParts.add(m.substring(i, m.indexOf(section)));
-                            i = m.indexOf(section) + section.length();
-                        }
-                        else {
-                            matches = false;
-                            break;
-                        }
-                    }
-                    if (matches) {
-                        //check if in between parts are multiples of rule 42 and 31
-                        for (String mSection : mParts) {
-                            matches = false;
-                            while (mSection.length() > 0) {
-                                for (String option : rule42) {
-                                    for (String option31 : rule31) {
-                                        if (mSection.indexOf(option) == 0 && mSection.indexOf(option31) == mSection.length() - option31.length()) {
-                                            mSection = option.substring(option.length(), mSection.indexOf(option31));
-                                            matches = true;
-                                            break;
-                                        }
-                                        else {
-                                            matches = false;
-                                        }
-                                        if (matches) break;
-                                    }
-                                }
-                                if (!matches) break;
-                            }
-                        }
-                        if (matches) count++;
-                    }
+                if (!has42) break;
+                if (count11 > 0 && count42 > 0 && m.length() == 0) {
+                    count++;
                 }
-                else if (m.equals(rule)) count++;
             }
         }
         return count;
