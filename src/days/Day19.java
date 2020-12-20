@@ -47,17 +47,20 @@ public class Day19 extends Day {
         makeRule(rules.get("42").substring(0, rules.get("42").indexOf(" | ")), "");
         makeRule(rules.get("42").substring(rules.get("42").indexOf(" | ")+3), "");
         List<String> rule42 = possibilities;
+        System.out.println(rule42);
         possibilities = new ArrayList<>();
 
         makeRule(rules.get("31").substring(0, rules.get("31").indexOf(" | ")), "");
         makeRule(rules.get("31").substring(rules.get("31").indexOf(" | ")+3), "");
         List<String> rule31 = possibilities;
+        System.out.println(rule31);
         possibilities = new ArrayList<>();
 
         makeRule2("0", "");
         int count = 0;
         // can tell from input that 0 is just 8 and 11 so that simplifies this a lot - don't even need the makeRule2 method but I'm going to leave it
         for (String m : messages) {
+            System.out.println(m);
             boolean has42;
             int count42 = 0;
             boolean has11;
@@ -66,7 +69,7 @@ public class Day19 extends Day {
                 has11 = false;
                 for (String option42 : rule42) {
                     for (String option31 : rule31) {
-                        if (m.indexOf(option42) > -1 && m.lastIndexOf(option31) == m.length() - option31.length()) {
+                        if (m.indexOf(option42) == 0 && m.lastIndexOf(option31) == m.length() - option31.length()) {
                             has11 = true;
                             count11++;
                             m = m.substring(option42.length(), m.length() - option31.length());
@@ -90,6 +93,7 @@ public class Day19 extends Day {
                 if (!has42) break;
                 if (count11 > 0 && count42 > 0 && m.length() == 0) {
                     count++;
+                    System.out.println(count);
                 }
             }
         }
