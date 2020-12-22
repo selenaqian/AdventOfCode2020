@@ -8,6 +8,7 @@ public class Main {
         try {
             Day21 temp = new Day21("data/day21/input.txt");
             System.out.println(temp.notAllergens());
+            System.out.println(temp.allergens());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

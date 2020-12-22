@@ -11,7 +11,7 @@ public class Day21 extends Day {
     public Day21(String filename) throws FileNotFoundException {
         super(filename);
         recipes = new HashSet<>();
-        allAllergens = new HashSet<>();
+        allAllergens = new TreeSet<>();
         allergenToName = new HashMap<>();
 
         for (String line : data) {
@@ -61,6 +61,14 @@ public class Day21 extends Day {
             count+=r.ingredients.size();
         }
         return count;
+    }
+
+    public String allergens() {
+        StringBuilder allergList = new StringBuilder();
+        for (String a : allAllergens) {
+            allergList.append(allergenToName.get(a) + ",");
+        }
+        return allergList.toString().substring(0, allergList.length()-1);
     }
 
     public class Recipe {
