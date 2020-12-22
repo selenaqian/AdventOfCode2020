@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             Day22 temp = new Day22("data/day22/input.txt");
-            System.out.println(temp.getScore());
+            System.out.println(temp.playRecurse());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
