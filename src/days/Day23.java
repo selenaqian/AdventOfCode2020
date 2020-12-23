@@ -1,81 +1,55 @@
 package days;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Day23 {
-    private final int HIGHEST = 9;
-    private final List<Boolean> ALL_FALSE = Arrays.asList(false, false, false, false, false, false, false, false, false);
-
-    private List<Integer> values;
-    private List<Boolean> pickedUp;
-    private int currentIndex;
+    private int[] values;
     private int current;
-    private int destinationIndex;
-    private int destination;
 
     public Day23(String input) {
-        values = new ArrayList<>();
-        pickedUp = new ArrayList<>();
-        currentIndex = 0;
+        values = new int[input.length()+1];
+        current = Integer.parseInt(input.substring(0, 1));
 
-        for (char c : input.toCharArray()) {
-            values.add(Integer.parseInt(c + ""));
-            pickedUp.add(false);
+        for (int i = 0; i < input.length() - 1; i++) {
+            int index = Integer.parseInt(input.substring(i, i+1));
+            int next = Integer.parseInt(input.substring(i+1, i+2));
+            values[index] = next; //so values array maps from value stored in index to next value in list
         }
-        current = values.get(currentIndex);
+        values[Integer.parseInt(input.substring(input.length() - 1))] = Integer.parseInt(input.substring(0, 1));
     }
 
     public void playGame(int n) {
         for (int i = 0; i < n; i++) {
             playRound();
         }
-        System.out.println(values);
+
+        int i = values[1];
+        String answer = "" + values[1];
+        while (i != 1) {
+            answer+=values[i];
+            i=values[i];
+        }
+        System.out.println(answer);
     }
 
     private void playRound() {
-//        System.out.println(values);
-        for (int i = 1; i < 4; i++) {
-            if (currentIndex+i < pickedUp.size()) {
-                pickedUp.add(currentIndex+i, true);
-                pickedUp.remove(currentIndex+i+1);
-            }
-            else {
-                pickedUp.add(currentIndex+i-9, true);
-                pickedUp.remove(currentIndex+i-8);
-            }
-        }
-//        System.out.println(pickedUp);
-        destination = findDestination(current);
-//        System.out.println(current);
-//        System.out.println(destination);
+        int a = values[current];
+        int b = values[a];
+        int c = values[b];
 
-        List<Integer> toMove = new ArrayList<>();
-        for (int i = 1; i < 4; i++) {
-            if (currentIndex+i < values.size()) toMove.add(values.get(currentIndex+i));
-            else toMove.add(values.get(currentIndex+i-values.size()));
-        }
-        values.removeAll(toMove);
-        destinationIndex = values.indexOf(destination);
-        values.addAll(destinationIndex+1, toMove);
+        int destination = findDestination(current, a, b, c);
 
-        pickedUp = new ArrayList<>(ALL_FALSE);
-        currentIndex = values.indexOf(current);
-        if (currentIndex+1 > 8) {
-            currentIndex-=9;
-        }
-        currentIndex++;
-        current = values.get(currentIndex);
+        values[current] = values[c];
+        values[c] = values[destination];
+        values[destination] = a;
+
+        current = values[current];
     }
 
-    private int findDestination(int n) {
+    private int findDestination(int n, int a, int b, int c) {
         n--;
-        if (n < 1) n = HIGHEST;
-        while (pickedUp.get(values.indexOf(n))) {
+        if (n < 1) n = values.length - 1;
+        while (n == a || n == b || n == c) {
             n--;
-            if (n < 1) n = HIGHEST;
+            if (n < 1) n = values.length - 1;
         }
         return n;
     }
