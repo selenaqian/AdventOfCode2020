@@ -2,7 +2,9 @@ package days;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Day24 extends Day {
     Map<Integer, String> tiles;
@@ -102,9 +104,60 @@ public class Day24 extends Day {
                     curr = "";
                 }
             }
-            tiles.putIfAbsent(x*10000+y*100+z, "white");
-            if (tiles.get(x*10000+y*100+z).equals("black")) tiles.put(x*10000+y*100+z, "white");
-            else tiles.put(x*10000+y*100+z, "black");
+            tiles.putIfAbsent(x*1000000+y*1000+z, "white");
+            if (tiles.get(x*1000000+y*1000+z).equals("black")) tiles.put(x*1000000+y*1000+z, "white");
+            else tiles.put(x*1000000+y*1000+z, "black");
+        }
+
+        int count = 0;
+        for (int i : tiles.keySet()) {
+            if (tiles.get(i).equals("black")) count++;
+        }
+        return count;
+    }
+
+    public int countBlackTiles(int days) {
+        //neighbors are: (1, 0, -1), (1, -1, 0), (0, -1, 1), (-1, 0, 1), (-1, 1, 0), (0, 1, -1)
+        int[] xNeighbors = new int[]{1, 1, 0, -1, -1, 0};
+        int[] yNeighbors = new int[]{0, -1, -1, 0, 1, 1};
+        int[] zNeighbors = new int[]{-1, 0, 1, 1, 0, -1};
+
+        for (int i = 0; i < days; i++) {
+            //add all neighbors to tiles - forgot this initially
+            Set<Integer> tileNeighbors = new HashSet<>();
+            for (int tile : tiles.keySet()) {
+                for (int j=0; j < xNeighbors.length; j++) {
+                    int x = xNeighbors[j];
+                    int y = yNeighbors[j];
+                    int z = zNeighbors[j];
+                    tileNeighbors.add(tile+x*1000000+y*1000+z);
+                }
+            }
+            for (int tile : tileNeighbors) {
+                tiles.putIfAbsent(tile, "white");
+            }
+
+            Map<Integer, String> nextTiles = new HashMap<>();
+            for (int tile : tiles.keySet()) {
+                int neighbors = 0;
+                for (int j=0; j < xNeighbors.length; j++) {
+                    int x = xNeighbors[j];
+                    int y = yNeighbors[j];
+                    int z = zNeighbors[j];
+                    if (tiles.containsKey(tile+x*1000000+y*1000+z) && tiles.get(tile+x*1000000+y*1000+z).equals("black")) neighbors++;
+                }
+
+                //if black tile, flip if 0 neighbors black or more than 2 neighbors black
+                //else if white tile flip if exactly 2 neighbors black
+                if (tiles.get(tile).equals("black") && (neighbors == 0 || neighbors > 2)) {
+                    nextTiles.put(tile, "white");
+                }
+                else if (tiles.get(tile).equals("white") && neighbors == 2) {
+                    nextTiles.put(tile, "black");
+                }
+                else nextTiles.put(tile, tiles.get(tile));
+            }
+            tiles = nextTiles;
         }
 
         int count = 0;
